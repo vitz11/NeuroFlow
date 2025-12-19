@@ -17,6 +17,16 @@ try:
 except ImportError:
     pass  # python-dotenv not installed, use system env vars
 
+# Load from Streamlit secrets if available (for Streamlit Cloud)
+try:
+    import streamlit as st
+    if hasattr(st, 'secrets'):
+        if 'kaggle' in st.secrets:
+            os.environ['KAGGLE_USERNAME'] = st.secrets['kaggle']['username']
+            os.environ['KAGGLE_KEY'] = st.secrets['kaggle']['key']
+except Exception:
+    pass  # Streamlit not available or secrets not set
+
 
 class DataLoader:
     """
